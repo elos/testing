@@ -8,7 +8,7 @@ import (
 	"github.com/elos/models/user"
 )
 
-func Userable(store data.Store, userable models.Userable, t *testing.T) {
+func Userable(store models.Store, userable models.Userable, t *testing.T) {
 	u, err := user.Create(store)
 	if err != nil {
 		t.Fatalf("Error while creating user: %s", err)
@@ -18,9 +18,7 @@ func Userable(store data.Store, userable models.Userable, t *testing.T) {
 		t.Errorf("Error while setting user: %s", err)
 	}
 
-	access := data.NewAccess(u, store)
-
-	uRetrieved, err := userable.User(access)
+	uRetrieved, err := userable.User(store)
 	if err != nil {
 		t.Errorf("Error while looking up user: %s", err)
 	}
@@ -35,7 +33,7 @@ type userableModel interface {
 	models.Userable
 }
 
-func UserOwnedAccessRights(store data.Store, userable userableModel, t *testing.T) {
+func UserOwnedAccessRights(store models.Store, userable userableModel, t *testing.T) {
 	u, err := user.Create(store)
 	if err != nil {
 		t.Fatalf("Error while creating user: %s", err)
